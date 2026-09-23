@@ -18,7 +18,7 @@ export async function GET(request: Request) {
 
   const supabase = createAdminClient();
   let query = supabase
-    .from("surat")
+    .from("arsip_surat")
     .select("*")
     .order("tanggal_surat", { ascending: false })
     .order("dibuat_pada", { ascending: false });
@@ -61,7 +61,7 @@ export async function POST(request: Request) {
 
   const supabase = createAdminClient();
   const { data, error } = await supabase
-    .from("surat")
+    .from("arsip_surat")
     .insert({
       jenis: body.jenis,
       nomor_surat: body.nomor_surat,

@@ -2,7 +2,7 @@
 
 create extension if not exists "pgcrypto";
 
-create table if not exists surat (
+create table if not exists arsip_surat (
   id uuid primary key default gen_random_uuid(),
   jenis text not null check (jenis in ('masuk', 'keluar')),
   nomor_surat text not null,
@@ -20,9 +20,9 @@ create table if not exists surat (
   diperbarui_pada timestamptz not null default now()
 );
 
-create index if not exists surat_jenis_idx on surat (jenis);
-create index if not exists surat_tanggal_surat_idx on surat (tanggal_surat);
-create index if not exists surat_kategori_idx on surat (kategori);
+create index if not exists arsip_surat_jenis_idx on arsip_surat (jenis);
+create index if not exists arsip_surat_tanggal_surat_idx on arsip_surat (tanggal_surat);
+create index if not exists arsip_surat_kategori_idx on arsip_surat (kategori);
 
 -- Trigger sederhana supaya diperbarui_pada otomatis terupdate tiap kali baris diubah
 create or replace function set_diperbarui_pada()
@@ -35,9 +35,9 @@ begin
 end;
 $$;
 
-drop trigger if exists surat_set_diperbarui_pada on surat;
-create trigger surat_set_diperbarui_pada
-before update on surat
+drop trigger if exists arsip_surat_set_diperbarui_pada on arsip_surat;
+create trigger arsip_surat_set_diperbarui_pada
+before update on arsip_surat
 for each row execute function set_diperbarui_pada();
 
 -- RLS diaktifkan TANPA policy sama sekali secara sengaja: aplikasi ini pakai
@@ -46,7 +46,7 @@ for each row execute function set_diperbarui_pada();
 -- yang otomatis bypass RLS. anon key / browser TIDAK PERNAH boleh menyentuh
 -- tabel ini langsung, sehingga "tanpa policy" di sini berarti "akses publik
 -- ditolak total", bukan kelalaian.
-alter table surat enable row level security;
+alter table arsip_surat enable row level security;
 
 -- Catatan setup Supabase Storage:
 -- 1. Buat bucket baru bernama "arsip-surat" (Storage > New bucket), set PRIVATE (bukan public).

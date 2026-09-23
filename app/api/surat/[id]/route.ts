@@ -15,7 +15,7 @@ export async function GET(
 
   const supabase = createAdminClient();
   const { data, error } = await supabase
-    .from("surat")
+    .from("arsip_surat")
     .select("*")
     .eq("id", params.id)
     .single();
@@ -51,7 +51,7 @@ export async function PATCH(
       return NextResponse.json({ error: "Disposisi untuk & catatan wajib diisi" }, { status: 400 });
     }
     const { data, error } = await supabase
-      .from("surat")
+      .from("arsip_surat")
       .update({
         disposisi_untuk,
         disposisi_catatan,
@@ -68,7 +68,7 @@ export async function PATCH(
   if (role === "admin_tu") {
     const update: Partial<SuratInput> & { disposisi_status?: string } = body;
     const { data, error } = await supabase
-      .from("surat")
+      .from("arsip_surat")
       .update({
         jenis: update.jenis,
         nomor_surat: update.nomor_surat,
@@ -102,12 +102,12 @@ export async function DELETE(
 
   const supabase = createAdminClient();
   const { data: existing } = await supabase
-    .from("surat")
+    .from("arsip_surat")
     .select("file_url")
     .eq("id", params.id)
     .single();
 
-  const { error } = await supabase.from("surat").delete().eq("id", params.id);
+  const { error } = await supabase.from("arsip_surat").delete().eq("id", params.id);
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

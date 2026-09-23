@@ -13,7 +13,7 @@ export default async function DetailSuratTuPage({
 }) {
   const supabase = createAdminClient();
   const { data, error } = await supabase
-    .from("surat")
+    .from("arsip_surat")
     .select("*")
     .eq("id", params.id)
     .single();

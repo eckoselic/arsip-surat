@@ -21,7 +21,7 @@ export async function GET(request: Request) {
 
   const supabase = createAdminClient();
   let query = supabase
-    .from("surat")
+    .from("arsip_surat")
     .select("*")
     .order("tanggal_surat", { ascending: true });
 
